@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colorectal Cancer Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Colorectal Cancer Classifier</h1>
+    <form id="upload-form">
+        <input type="file" name="file" accept=".tif,.tiff,.jpg,.jpeg,.png" required>
+        <button type="submit">Upload and Predict</button>
+    </form>
+    <div id="result">
+        <h2>Result:</h2>
+        <p><strong>Predicted Class:</strong> <span id="predicted-class"></span></p>
+        <p><strong>Confidence Score:</strong> <span id="confidence-score"></span></p>
+        <img id="uploaded-image" src="" alt="Uploaded Image" style="max-width: 300px; display: none;">
+    </div>
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('file', e.target.file.files[0]);
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            if (result.error) {
+                alert(result.error);
+            } else {
+                document.getElementById('predicted-class').textContent = result.predicted_class;
+                document.getElementById('confidence-score').textContent = result.confidence_score.toFixed(4);
+                document.getElementById('uploaded-image').src = result.image_url;
+                document.getElementById('uploaded-image').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
