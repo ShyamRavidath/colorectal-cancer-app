@@ -7,6 +7,7 @@ from tensorflow.keras.models import load_model
 model = load_model('Model.h5')
 
 # Define classes
+benign_classes = ['ADI', 'BACK', 'DEB', 'LYM', 'MUC', 'MUS', 'NORM']
 CLASSES = ['ADI', 'BACK', 'DEB', 'LYM', 'MUC', 'MUS', 'NORM', 'STR', 'TUM']
 
 # Preprocess the image
@@ -37,7 +38,8 @@ if uploaded_file is not None:
     predicted_class_idx = np.argmax(predictions)
     predicted_class = CLASSES[predicted_class_idx]
     confidence_score = float(predictions[0][predicted_class_idx])
-
+    result = "Benign" if predicted_class in benign_classes else "Malignant"
     # Display the result
+    st.write(f"**Tissue:** {result}")
     st.write(f"**Predicted Class:** {predicted_class}")
     st.write(f"**Confidence Score:** {confidence_score:.4f}")
