@@ -7,7 +7,7 @@ This Streamlit app classifies histopathology images into benign or malignant tis
 2. The app will classify the image and display the result.
 
 ## Deployment
-The app is deployed on [Streamlit Sharing](https://share.streamlit.io/your-username/your-repo-name/app.py).
+The app is deployed on [Streamlit Sharing](https://colorectal-cancer-app.streamlit.app/).
 
 ## Requirements
 - Python 3.8+
