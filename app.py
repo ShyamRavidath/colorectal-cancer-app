@@ -38,7 +38,7 @@ st.title("Colorectal Cancer Classifier")
 st.write("Upload a histopathology image to classify it.")
 
 # File uploader
-st.file_uploader(
+uploaded_files = st.file_uploader(
     "Upload one or more images...",
     type=["tif", "tiff", "jpg", "jpeg", "png"],
     accept_multiple_files=True
