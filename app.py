@@ -20,7 +20,7 @@ model = Sequential([
     Dropout(0.5),
     Dense(9, activation='softmax')
 ])
-model.load_weights('Model_2.h5')  # Load the .keras format
+model.load_weights('Model_20_NWSE.h5')  # Load the .keras format
 
 # Define classes
 benign_classes = ['ADI', 'BACK', 'DEB', 'LYM', 'MUC', 'MUS', 'NORM']
