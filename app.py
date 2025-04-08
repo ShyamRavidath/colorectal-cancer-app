@@ -38,24 +38,31 @@ st.title("Colorectal Cancer Classifier")
 st.write("Upload a histopathology image to classify it.")
 
 # File uploader
-uploaded_file = st.file_uploader("Choose an image...", type=["tif", "tiff", "jpg", "jpeg", "png"])
+st.file_uploader(
+    "Upload one or more images...",
+    type=["tif", "tiff", "jpg", "jpeg", "png"],
+    accept_multiple_files=True
+)
 
-if uploaded_file is not None:
-    # Read the image
-    file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
-    image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+if uploaded_files:
+    for uploaded_file in uploaded_files:
+        # Read the image
+        file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+        image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
 
-    # Display the image
-    st.image(image, caption="Uploaded Image", use_column_width=True)
+        # Display the image
+        st.image(image, caption=f"Uploaded: {uploaded_file.name}", use_column_width=True)
 
-    # Preprocess the image and make a prediction
-    img = preprocess_image(image)
-    predictions = model.predict(img)
-    predicted_class_idx = np.argmax(predictions)
-    predicted_class = CLASSES[predicted_class_idx]
-    confidence_score = float(predictions[0][predicted_class_idx])
-    result = "Benign" if predicted_class in benign_classes else "Malignant"
-    # Display the result
-    st.write(f"**Tissue:** {result}")
-    st.write(f"**Predicted Class:** {predicted_class}")
-    st.write(f"**Confidence Score:** {confidence_score:.4f}")
+        # Preprocess and predict
+        img = preprocess_image(image)
+        predictions = model.predict(img)
+        predicted_class_idx = np.argmax(predictions)
+        predicted_class = CLASSES[predicted_class_idx]
+        confidence_score = float(predictions[0][predicted_class_idx])
+        result = "Benign" if predicted_class in benign_classes else "Malignant"
+
+        # Show results
+        st.markdown(f"**Tissue:** {result}")
+        st.markdown(f"**Predicted Class:** {predicted_class}")
+        st.markdown(f"**Confidence Score:** {confidence_score:.4f}")
+        st.markdown("---")
